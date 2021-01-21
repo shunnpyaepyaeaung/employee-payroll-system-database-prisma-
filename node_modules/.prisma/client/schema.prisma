@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Employee {
+  id            Int            @id @default(autoincrement())
+  employeename  String
+  address       String
+  agreesalary   Float
+  MonthlySalary MonthlySalary?
+  Paid          Paid?
+}
+
+model MonthlySalary {
+  id            Int      @id @default(autoincrement())
+  actualsalary  Float
+  employeeTable Employee @relation(fields: [e_Id], references: [id])
+  e_Id          Int      @unique
+}
+
+model Paid {
+  id            Int      @id @default(autoincrement())
+  paidmonth     String
+  payout        Float
+  employeeTable Employee @relation(fields: [e_id], references: [id])
+  e_id          Int      @unique
+}
